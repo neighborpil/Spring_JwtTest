@@ -92,5 +92,6 @@ public class AuthToken {
                 request.setAttribute("exception", SecurityErrorCode.EXPIRED_TOKEN.getCode());
             }
         }
+        return null;
     }
 }

@@ -1,10 +1,13 @@
 package com.neighborpil.test.jwt.config;
 
+import com.neighborpil.test.jwt.config.jwt.AuthTokenProvider;
 import com.neighborpil.test.jwt.config.oauth2.entity.RoleType;
 import com.neighborpil.test.jwt.config.oauth2.exception.RestAuthenticationEntryPoint;
+import com.neighborpil.test.jwt.config.oauth2.filter.TokenAuthenticationFilter;
 import com.neighborpil.test.jwt.config.oauth2.handler.TokenAccessDeniedHandler;
 import com.neighborpil.test.jwt.config.oauth2.service.CustomUserDetailsService;
 import com.neighborpil.test.jwt.config.properties.CorsProperties;
+import com.neighborpil.test.jwt.utils.CommonRequestContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +35,8 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final CorsProperties corsProperties;
+    private final AuthTokenProvider tokenProvider;
+    private final CommonRequestContext commonRequestContext;
     private final CustomUserDetailsService userDetailsService;
 
     private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
@@ -48,7 +53,8 @@ public class SecurityConfig {
 
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
-        return new TokenAuthenticationFilter()
+        return new TokenAuthenticationFilter(tokenProvider, commonRequestContext);
+//        return new TokenAuthenticationFilter(tokenProvider, commonRequestContext, authTokenRepository);
     }
 
     /**
